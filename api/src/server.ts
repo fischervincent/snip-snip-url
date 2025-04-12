@@ -1,4 +1,6 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
+
 import { throwIfInvalidUrl, throwIfNoUrl, throwIfShortenUrl } from './url-validation';
 import { generateSlug } from './generate-slug';
 import { findLongUrlFromSlug, findSlugIfExists, storeSlugRecord } from './datastorage/url-db-memory';
@@ -6,6 +8,11 @@ import { findLongUrlFromSlug, findSlugIfExists, storeSlugRecord } from './datast
 const app = express();
 const port = 3000;
 app.use(express.json());
+
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello from Express + TypeScript!');

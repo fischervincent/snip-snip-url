@@ -62,7 +62,7 @@ export function UrlShortenerForm() {
           )}
         </div>
       </form>
-      {shortUrl && (
+      {shortUrl && !error && (
         <div className="flex flex-col justify-between">
           <div className="flex items-center gap-1">
             <CheckMarkIcon className="h-10 w-10 text-green-400" />
