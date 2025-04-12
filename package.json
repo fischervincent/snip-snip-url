@@ -5,11 +5,13 @@
   "main": "index.js",
   "private": true,
   "workspaces": [
-    "app"
+    "app",
+    "api"
   ],
   "scripts": {
     "dev:app": "npm run dev --workspace app",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:api": "npm run dev --workspace api",
+    "test": "npm test --workspace api"
   },
   "keywords": [],
   "author": "Vincent Fischer",
