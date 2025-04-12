@@ -2,10 +2,16 @@ import { describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 
 import app from './server';
+import { afterEach } from 'node:test';
+import { clearDataStorage } from './datastorage/url-db-memory';
 
 vi.mock('./generate-slug', () => ({
   generateSlug: vi.fn(() => '00001111')
 }));
+
+afterEach(() => {
+  clearDataStorage();
+});
 
 describe('POST /shorten', () => {
   it('returns 400 if no url in body', async () => {
@@ -36,5 +42,17 @@ describe('POST /shorten', () => {
     )
     expect(response.status).toBe(200);
     expect(response.body.shortenedUrl).toBe('localhost:3000/00001111');
+  });
+
+  it('should redirect to the original URL for a valid slug', async () => {
+    const longUrl = 'http://example.com';
+    await request(app).post('/shorten').send({ url: longUrl });
+
+    const response = await request(app)
+      .get(`/00001111`)
+      .expect(302);
+
+    // Check that the Location header is set to the original URL
+    expect(response.header['location']).toBe(longUrl);
   });
 });
