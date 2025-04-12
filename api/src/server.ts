@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { throwIfInvalidUrl, throwIfNoUrl, throwIfShortenUrl } from './url-validation';
 
 const app = express();
 const port = 3000;
@@ -6,14 +7,22 @@ const port = 3000;
 // Middleware
 app.use(express.json());
 
-// Sample route
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello from Express + TypeScript!');
 });
 
-// Example of a simple API route
-app.get('/api/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'ok' });
+app.post('/shorten', (req: Request, res: Response) => {
+  const { url } = req.body;
+  try {
+    throwIfNoUrl(url);
+    throwIfInvalidUrl(url);
+    throwIfShortenUrl(url);
+  } catch (err: unknown) {
+    const errorMessage = (err as Error).message || "An unknown error occurred.";
+    res.status(400).json({ error: errorMessage });
+    return;
+  }
+  res.status(200).json({ shortenedUrl: 'myShortUrl' });
 });
 
 app.listen(port, () => {
