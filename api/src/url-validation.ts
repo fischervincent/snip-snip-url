@@ -1,3 +1,5 @@
+import { ShortenedUrlFactory } from "./domain/shortened-url";
+
 export const throwIfNoUrl = (url: string) => {
   if (!url) {
     throw new Error("Please enter a URL");
@@ -5,16 +7,11 @@ export const throwIfNoUrl = (url: string) => {
 }
 
 export const throwIfInvalidUrl = (url: string) => {
-  try {
-    new URL(url);
-  } catch (err) {
-    throw new Error("Please enter a valid URL");
-  }
+  if (!ShortenedUrlFactory.validation.isValidUrlFormat(url)) throw new Error("Please enter a valid URL");
 }
 
 export const throwIfShortenUrl = (url: string) => {
-  // to avoid loops we should not allow to short already shortened url
-  if (url.includes("localhost:3000")) { // TO DO: make this dynamic
+  if (ShortenedUrlFactory.validation.isShortenedUrl(url, "localhost:3000")) {
     throw new Error("This URL is already shortened");
   }
 }

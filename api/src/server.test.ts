@@ -1,15 +1,24 @@
-import { afterEach, describe, it, expect, vi } from 'vitest';
+import { afterEach, beforeAll, describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 
-import app from './server';
-import { clearDataStorage } from './datastorage/url-db-pg';
+import { createApp } from "./server";
+import { PostgresShortenUrlRepository } from "./infrastructure/repositories/postgres-url-repository";
+import { clearUrlStorage } from './tests/clear-url-storage';
+import { App } from 'supertest/types';
 
-vi.mock('./generate-slug', () => ({
+vi.mock('./domain/generate-slug.ts', () => ({
   generateSlug: vi.fn(() => '00001111')
 }));
 
+let app: App;
+
+beforeAll(async () => {
+  const repo = new PostgresShortenUrlRepository();
+  app = await createApp(repo);
+})
+
 afterEach(async () => {
-  await clearDataStorage();
+  await clearUrlStorage();
 });
 
 describe('POST /shorten', () => {
@@ -35,11 +44,11 @@ describe('POST /shorten', () => {
     )
     expect(response.status).toBe(400);
   });
-  it('returns 200 and shortened url if url is valid', async () => {
+  it('returns 201 and shortened url if url is valid', async () => {
     const response = await request(app).post('/shorten').send(
       { url: 'https://www.google.com' }
     )
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     expect(response.body.shortenedUrl).toBe('localhost:3000/00001111');
   });
 
