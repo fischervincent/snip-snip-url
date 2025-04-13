@@ -3,7 +3,7 @@ import cors from 'cors';
 
 import { throwIfInvalidUrl, throwIfNoUrl, throwIfShortenUrl } from './url-validation';
 import { generateSlug } from './generate-slug';
-import { findLongUrlFromSlug, findSlugIfExists, storeSlugRecord } from './datastorage/url-db-memory';
+import { findLongUrlFromSlug, findSlugIfExists, storeSlugRecord } from './datastorage/url-db-pg';
 
 const app = express();
 const port = 3000;
@@ -41,7 +41,7 @@ app.post('/shorten', async (req: Request, res: Response) => {
   }
   const slug = generateSlug();
   const shortenedUrl = `localhost:3000/${slug}`;
-  await storeSlugRecord(url, slug);
+  await storeSlugRecord(url, slug, new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)); // 30 days expiration
   res.status(200).json({ shortenedUrl });
 });
 

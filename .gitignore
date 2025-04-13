@@ -1,7 +1,7 @@
 # Node
 node_modules/
 dist/
-.env
+# .env not ignored to simplify local testing, one less step
 *.log
 
 # OS

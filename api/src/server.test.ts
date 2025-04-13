@@ -1,16 +1,15 @@
-import { describe, it, expect, vi } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 
 import app from './server';
-import { afterEach } from 'node:test';
-import { clearDataStorage } from './datastorage/url-db-memory';
+import { clearDataStorage } from './datastorage/url-db-pg';
 
 vi.mock('./generate-slug', () => ({
   generateSlug: vi.fn(() => '00001111')
 }));
 
-afterEach(() => {
-  clearDataStorage();
+afterEach(async () => {
+  await clearDataStorage();
 });
 
 describe('POST /shorten', () => {

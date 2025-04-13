@@ -6,7 +6,8 @@
     "dev": "ts-node src/server.ts",
     "build": "tsc",
     "test": "vitest run",
-    "test:watch": "vitest watch"
+    "test:watch": "vitest watch",
+    "db:migrate:up": "dotenv -- sh -c 'DATABASE_URL=\"postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}\" node-pg-migrate up'"
   },
   "keywords": [],
   "author": "Vincent Fischer",
@@ -16,7 +17,11 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
+    "@types/pg": "^8.11.12",
     "@types/supertest": "^6.0.3",
+    "dotenv": "^16.5.0",
+    "dotenv-cli": "^8.0.0",
+    "node-pg-migrate": "^7.9.1",
     "supertest": "^7.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
@@ -25,6 +30,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "nanoid": "^5.1.5"
+    "nanoid": "^5.1.5",
+    "pg": "^8.14.1"
   }
 }

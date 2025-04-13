@@ -9,11 +9,21 @@
     "api"
   ],
   "scripts": {
+    "dev": "concurrently \"npm run dev:app\" \"npm run dev:api\"",
     "dev:app": "npm run dev --workspace app",
     "dev:api": "npm run dev --workspace api",
-    "test": "npm test --workspace api"
+    "test": "npm test --workspace api",
+    "db:start": "docker-compose -f ./api/docker-compose.yml -p vincenfischer --env-file ./api/.env up -d",
+    "db:logs": "docker-compose -f ./api/docker-compose.yml -p vincenfischer --env-file ./api/.env logs -f",
+    "db:stop": "docker-compose -f ./api/docker-compose.yml -p vincenfischer --env-file ./api/.env stop",
+    "docker:clean": "docker-compose -f ./api/docker-compose.yml -p vincenfischer down --volumes --rmi all",
+    "db:migrate": "npm run db:migrate --workspace api",
+    "db:migrate:up": "npm run db:migrate:up --workspace api"
   },
   "keywords": [],
   "author": "Vincent Fischer",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
