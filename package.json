@@ -9,7 +9,7 @@
     "api"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev:app\" \"npm run dev:api\"",
+    "start": "concurrently \"npm run dev:app\" \"npm run dev:api\"",
     "dev:app": "npm run dev --workspace app",
     "dev:api": "npm run dev --workspace api",
     "test": "npm test --workspace api",

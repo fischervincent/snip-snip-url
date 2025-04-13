@@ -3,7 +3,7 @@
 1. ```npm install```
 2. ```npm run db:start``` > it will start a docker project named vincenfischer with a postgres container
 3. ```npm run db:migrate:up``` > to create the postgres table
-4. ```npm run dev``` > run concurrently the vite react app and the express api
+4. ```npm run start``` > run concurrently the vite react app and the express api
 
 # Requirements
 
