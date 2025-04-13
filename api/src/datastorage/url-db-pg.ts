@@ -13,11 +13,13 @@ export const findSlugIfExists = async (url: string): Promise<string | null> => {
   }
 }
 
-export const findLongUrlFromSlug = async (slug: string): Promise<string | null> => {
+export const findLongUrlFromSlug = async (slug: string, date: Date): Promise<string | null> => {
   try {
     const result = await client.query(
-      'SELECT url FROM urls WHERE slug = $1',
-      [slug]
+      `SELECT url FROM urls
+       WHERE slug = $1
+       AND expire_at > $2`,
+      [slug, date]
     );
     return result.rows[0]?.url;
   } catch (err) {
@@ -37,6 +39,21 @@ export const storeSlugRecord = async (url: string, slug: string, expire_at: Date
     return result.rows[0];
   } catch (err) {
     console.error('Error storing slug record:', err);
+    throw err;
+  }
+}
+
+export const renewSlug = async (slug: string, expire_at: Date): Promise<void> => {
+  try {
+    const result = await client.query(
+      `UPDATE urls
+       SET expire_at = $1
+       WHERE slug = $2`,
+      [expire_at, slug]
+    );
+    return result.rows[0];
+  } catch (err) {
+    console.error('Error renewing slug:', err);
     throw err;
   }
 }
