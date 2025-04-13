@@ -4,6 +4,7 @@ import ArrowRightIcon from "../icons/ArrowRightIcon"
 import CheckMarkIcon from "../icons/CheckMarkIcon"
 import { throwIfInvalidUrl } from "./throwIfInvalidUrl"
 import { postUrlToShorten } from "./postUrlToShorten";
+import { CopyToClipboardButton } from "./CopyToClipboardButton";
 
 export function UrlShortenerForm() {
   const [url, setUrl] = useState("");
@@ -70,12 +71,15 @@ export function UrlShortenerForm() {
               Your tiny url
             </label>
           </div>
-          <input
-            type="text"
-            value={shortUrl}
-            readOnly
-            className="w-full pl-4 h-16 text-lg bg-white/90 border-blue-300 focus-visible:ring-blue-200 rounded-xl"
-          />
+          <div className="relative w-full">
+            <input
+              type="text"
+              value={shortUrl}
+              readOnly
+              className="w-full pl-4 h-16 text-lg bg-white/90 border-blue-300 focus-visible:ring-blue-200 rounded-xl"
+            />
+            <CopyToClipboardButton text={shortUrl} />
+          </div>
         </div>
       )}
     </div>
